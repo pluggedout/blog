@@ -240,14 +240,6 @@ ClientBin/
 *.publishsettings
 orleans.codegen.cs
 
-# Including strong name files can present a security risk
-# (https://github.com/github/gitignore/pull/2483#issue-259490424)
-#*.snk
-
-# Since there are multiple workflows, uncomment next line to ignore bower_components
-# (https://github.com/github/gitignore/pull/1529#issuecomment-104372622)
-#bower_components/
-
 # RIA/Silverlight projects
 Generated_Code/
 
@@ -376,57 +368,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-##
-## Visual studio for Mac
-##
-
-
-# globs
-Makefile.in
-*.userprefs
-*.usertasks
-config.make
-config.status
-aclocal.m4
-install-sh
-autom4te.cache/
-*.tar.gz
-tarballs/
-test-results/
-
-# Mac bundle stuff
-*.dmg
-*.app
-
-# content below from: https://github.com/github/gitignore/blob/master/Global/macOS.gitignore
-# General
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Icon must end with two \r
-Icon
-
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-
 # content below from: https://github.com/github/gitignore/blob/master/Global/Windows.gitignore
 # Windows thumbnail cache files
 Thumbs.db
@@ -498,6 +439,8 @@ umbraco-package-schema.json
 /umbraco/Data/*.sqlite.db
 /umbraco/Data/*.sqlite.db-shm
 /umbraco/Data/*.sqlite.db-wal
+*.sqlite.db
+*.sqlite.db-journal
 
 # Log files
 /umbraco/Logs/
@@ -506,3 +449,18 @@ umbraco-package-schema.json
 /wwwroot/media/
 # JetBrains Rider
 *.sln.iml
+
+# Umbraco
+umbracoData/
+Umbraco.sqlite.db
+.umbraco/
+umbraco/
+
+# Temporary Umbraco files
+**/App_Data/Logs/
+**/App_Data/TEMP/
+**/App_Data/NuGetBackup/
+**/App_Data/cache/
+
+# Media files (if you don't want to version control them)
+**/wwwroot/media/

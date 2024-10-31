@@ -1,9 +1,21 @@
 using Microsoft.EntityFrameworkCore;
+using Umbraco.Data;
 using UmbracoBlog.Data;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 var config = builder.Configuration;
+builder.Services.AddUmbracoDbContext<ApplicationDbContext>(options =>
+{
+	//Directory.CreateDirectory(ApplicationDataPath);
+    options.UseSqlite(config.GetConnectionString("umbracoDbDSN"));
+	//options.AddInterceptors(serviceProvider.GetRequiredService<DatabaseConnectionInterceptor>());
+});
+//.AddPooledDbContextFactory<DatabaseContext>(options => { });
+//services.AddHostedService<DatabaseMigrationService>();
+
+builder.Services.AddControllers();
+builder.Services.AddDbContext<ApplicationDbContext>();
 
 builder.CreateUmbracoBuilder()
     .AddBackOffice()
@@ -14,21 +26,7 @@ builder.CreateUmbracoBuilder()
 
 WebApplication app = builder.Build();
 
-// builder.Services.AddUmbracoEFCoreContext<ApplicationDbContext>(
-//     config.GetConnectionString("umbracoDbDSN"),
-//     config.GetConnectionStringProviderName("umbracoDbDSN")
-// );
-
-builder.Services.AddUmbracoDbContext<ApplicationDbContext>(options =>
-{
-    options.UseSqlite(config.GetConnectionString("umbracoDbDSN"));
-});
-
-builder.Services.AddControllers();
-builder.Services.AddDbContext<ApplicationDbContext>();
-
 await app.BootUmbracoAsync();
-
 
 app.UseUmbraco()
     .WithMiddleware(u =>
@@ -38,6 +36,7 @@ app.UseUmbraco()
     })
     .WithEndpoints(u =>
     {
+        //u.UseInstallerEndpoints();
         u.UseBackOfficeEndpoints();
         u.UseWebsiteEndpoints();
     });

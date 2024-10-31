@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace UmbracoBlog.Data
 {
+    // [Table("Comment")]
     public class Comment
     {
         public int Id { get; set; }

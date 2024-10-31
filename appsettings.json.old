@@ -1,0 +1,43 @@
+{
+  "$schema": "appsettings-schema.json",
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Warning",
+        "Microsoft.Hosting.Lifetime": "Information",
+        "System": "Warning"
+      }
+    }
+  },
+//   "ConnectionStrings": {
+//   "umbracoDbDSN": "Data Source=|DataDirectory|\\Umbraco.sqlite.db",
+//   "umbracoDbDSN_ProviderName": "Microsoft.Data.Sqlite"
+// },
+"ConnectionStrings": {
+    "umbracoDbDSN": "Data Source=|DataDirectory|/Umbraco.sqlite.db"
+    // "umbracoDbDSN_ProviderName": "Microsoft.Data.SQLite"
+},
+  "Umbraco": {
+    "CMS": {
+      "Global": {
+        "UmbracoDbProvider": "Microsoft.Data.Sqlite",       
+        "InstallMissingDatabase": true,
+        "Id": "7adfdd6e-a574-4b60-87eb-e003e1165794",
+        "SanitizeTinyMce": true
+      },
+      "Content": {
+        "AllowEditInvariantFromNonDefault": true,
+        "ContentVersionCleanupPolicy": {
+          "EnableCleanup": true
+        }
+      },
+      "Unattended": {
+        "UpgradeUnattended": true
+      },
+      "Security": {
+        "AllowConcurrentLogins": false
+      }
+    }
+  }
+}

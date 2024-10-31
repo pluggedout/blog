@@ -1,38 +1,73 @@
-// Data/ApplicationDbContext.cs
-
-// Data/ApplicationDbContext.cs
 using Microsoft.EntityFrameworkCore;
+using UmbracoBlog.Data;
 
-namespace UmbracoBlog.Data
+namespace Umbraco.Data
 {
-    public class ApplicationDbContext : DbContext
+
+public class ApplicationDbContext : DbContext
+{
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+
+    public required DbSet<BlogPost> BlogPosts { get; set; }
+    public required DbSet<Author> Authors { get; set; }
+    public required DbSet<Category> Categories { get; set; }
+    public required DbSet<Comment> Comments { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        // Many-to-many relationship between BlogPost and Category
+        modelBuilder.Entity<BlogPost>()
+            .HasMany(b => b.Categories)
+            .WithMany(c => c.BlogPosts);
 
-        public DbSet<BlogPost> BlogPosts { get; set; }
-        public DbSet<Author> Authors { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Comment> Comments { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        // One-to-many relationship between BlogPost and Comment
+        modelBuilder.Entity<BlogPost>()
+            .HasMany(b => b.Comments)
+            .WithOne(c => c.BlogPost)
+            .HasForeignKey(c => c.BlogPostId);
+
+        // One-to-many relationship between Author and BlogPost
+        modelBuilder.Entity<Author>()
+            .HasMany(a => a.BlogPosts)
+            .WithOne(b => b.Author)
+            .HasForeignKey(b => b.AuthorId);
+
+        // Additional configuration using fluent API
+        modelBuilder.Entity<BlogPost>(entity =>
         {
-            base.OnModelCreating(modelBuilder);
+            entity.ToTable("blogPost");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Title).HasColumnName("title");
+            // Add more column mappings as needed
+        });
 
-            // Many-to-many relationship between BlogPost and Category
-            modelBuilder.Entity<BlogPost>()
-                .HasMany(b => b.Categories)
-                .WithMany(c => c.BlogPosts);
+        modelBuilder.Entity<Author>(entity =>
+        {
+            entity.ToTable("author");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name).HasColumnName("name");
+            // Add more column mappings as needed
+        });
 
-            // One-to-many relationship between BlogPost and Comment
-            modelBuilder.Entity<BlogPost>()
-                .HasMany(b => b.Comments)
-                .WithOne(c => c.BlogPost)
-                .HasForeignKey(c => c.BlogPostId);
+        modelBuilder.Entity<Category>(entity =>
+        {
+            entity.ToTable("category");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name).HasColumnName("name");
+            // Add more column mappings as needed
+        });
 
-            // One-to-many relationship between Author and BlogPost
-            modelBuilder.Entity<Author>()
-                .HasMany(a => a.BlogPosts)
-                .WithOne(b => b.Author)
-                .HasForeignKey(b => b.AuthorId);
-        }
+        modelBuilder.Entity<Comment>(entity =>
+        {
+            entity.ToTable("comment");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Content).HasColumnName("content");
+            // Add more column mappings as needed
+        });
     }
+}
 }
